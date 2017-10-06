@@ -1,14 +1,34 @@
-# Heroku Buildpack for Node.js
+# Heroku Buildpack for N|Solid
 
-![nodejs](https://cloud.githubusercontent.com/assets/51578/13712672/efdf2a40-e792-11e5-82ef-492478cbc0dc.png)
+![N|Solid](NSolid.png)
 
-This is the official [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for Node.js apps.
+This is the official Heroku buildpack for
+[N|Solid](https://nodesource.com/products/nsolid)
+apps.
 
-[![Build Status](https://travis-ci.org/heroku/heroku-buildpack-nodejs.svg)](https://travis-ci.org/heroku/heroku-buildpack-nodejs)
+The buildpack is based on the
+[Heroku buildpack for Node.js](https://github.com/heroku/heroku-buildpack-nodejs).
+
+For more information on the
+[N|Solid product](https://nodesource.com/products/nsolid)
+from
+[NodeSource](https://nodesource.com/),
+visit the
+[N|Solid documentation site](https://docs.nodesource.com/nsolid).
 
 ## Documentation
 
-For more information about using this Node.js buildpack on Heroku, see these Dev Center articles:
+To use this buildpack with your Node.js application, run the following command:
+
+```
+heroku buildpacks:set https://github.com/nodesource/heroku-buildpack-nsolid -a my-app-name
+```
+
+Since this buildpack is based on the
+[Heroku buildpack for Node.js](https://github.com/heroku/heroku-buildpack-nodejs),
+most of the documentation for that buildpack applies to this one. For more
+information about using the Node.js buildpack on Heroku, see these Heroku Dev
+Center articles:
 
 - [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
 - [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/nodejs)
@@ -18,6 +38,32 @@ For more general information about buildpacks on Heroku:
 - [Buildpacks](https://devcenter.heroku.com/articles/buildpacks)
 - [Buildpack API](https://devcenter.heroku.com/articles/buildpack-api)
 
+
+## Differences from the Heroku buildpack for Node.js
+
+The primary difference between this buildpack and the Heroku buildpack for Node.js,
+is that this buildpack will install N|Solid runtimes instead of Node.js runtimes.
+
+The most current version of N|Solid runtimes is always selected, and the LTS
+version (eg, 4.x, 6.x, 8.x) can be selected by setting the `engines.node`
+property as described in the
+[Heroku docs for specifying a Node.js version][engines.node].  To select a
+particular LTS version, the `engines.node` property should be a string that
+starts with the specific version.  For example, the following property values
+all select the LTS 4.x version of N|Solid:
+
+* `4`
+* `4.x`
+* `4.8.4`
+
+If the first characters of the `engines.node` property do not match an existing
+LTS version available, or if `engines.node` not specified at all, the most
+recent supported LTS version will be selected.  For example, if LTS 4 and 6
+versions are available, version 6 will be used unless the `engines.node`
+property is to a string that starts with 4.
+
+[engines.node]: https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version
+
 ## Locking to a buildpack version
 
 In production, you frequently want to lock all of your dependencies - including
@@ -25,28 +71,42 @@ buildpacks - to a specific version. That way, you can regularly update and
 test them, upgrading with confidence.
 
 First, find the version you want from
-[the list of buildpack versions](https://github.com/heroku/heroku-buildpack-nodejs/releases).
+[the list of buildpack tags](https://github.com/nodesource/heroku-buildpack-nsolid/tags)
+which include `nsolid` in the tag name.
 Then, specify that version with `buildpacks:set`:
 
 ```
-heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs#v83 -a my-app
+heroku buildpacks:set https://github.com/nodesource/heroku-buildpack-nsolid#v111-nsolid-1 -a my-app-name
 ```
 
 If you have trouble upgrading to the latest version of the buildpack, please
-open a support ticket at [help.heroku.com](https://help.heroku.com/) so we can assist.
+open an
+[issue in the GitHub repo](https://github.com/nodesource/heroku-buildpack-nsolid/issues)
+so we can assist.
 
 ### Chain Node with multiple buildpacks
 
 This buildpack automatically exports node, npm, and any node_modules binaries
 into the `$PATH` for easy use in subsequent buildpacks.
 
+## Changes made to the Heroku Buildpack for Node.js files
+
+The following files have been changed from the Heroku Buildpack for Node.js,
+for this buildpack:
+
+* `bin/compile` - calls `lib/nsolid.sh` to replace the `install_bins` function
+  so that an N|Solid runtime is installed instead of Node.js
+* `lib/nsolid.sh` - implements a new `install_bins` function to install the
+  N|Solid runtime
+* `test/run` - commented out some tests not applicable to this buildpack,
+  and changed a few expectations of runtime versions installed
+* `test/utils` - removed messages from graceful-fs in stderr
+
 ## Feedback
 
 Having trouble? Dig it? Feature request?
 
-- [help.heroku.com](https://help.heroku.com/)
-- [@jeremymorrell](http://twitter.com/jeremymorrell)
-- [GitHub issues](https://github.com/heroku/heroku-buildpack-nodejs/issues)
+- [GitHub issues](https://github.com/nodesource/heroku-buildpack-nsolid/issues)
 
 ## Hacking
 

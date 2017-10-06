@@ -134,6 +134,8 @@ install_bins() {
   warn_old_npm
 }
 
+source $BP_DIR/lib/nsolid.sh
+
 header "Installing binaries"
 install_bins | output "$LOG_FILE"
 

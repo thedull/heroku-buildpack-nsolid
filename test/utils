@@ -94,7 +94,7 @@ assertNotCaptured()
 assertCapturedSuccess()
 {
   assertEquals "Expected captured exit code to be 0; was <${RETURN}>" "0" "${RETURN}"
-  assertEquals "Expected STD_ERR to be empty; was <$(cat ${STD_ERR})>" "" "$(cat ${STD_ERR})"
+  assertEquals "Expected STD_ERR to be empty; was <$(cat ${STD_ERR})>" "" "$(cat ${STD_ERR} | grep -v 'fs: re-evaluating')"
 }
 
 # assertCapturedError [[expectedErrorCode] expectedErrorMsg]
