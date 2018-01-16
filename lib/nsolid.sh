@@ -3,6 +3,7 @@ NSOLID_DEFAULT_LTS_VERSION_MAJOR=6
 
 NSOLID_METADATA_URL=https://nsolid-download.nodesource.com/download/metadata.json
 NSOLID_METADATA_FILE=/tmp/nsolid-metadata.json
+NSOLID_VERSIONS_FILE=/tmp/nsolid-versions.txt
 NSOLID_VERSION_FILE=/tmp/nsolid-version.txt
 NODE_VERSION_FILE=./node-version.txt
 
@@ -14,7 +15,8 @@ install_nsolid() {
 
   # get the N|Solid version
   curl --output $NSOLID_METADATA_FILE --silent --retry 5 --retry-max-time 15 $NSOLID_METADATA_URL
-  $JQ --raw-output 'paths | .[0]' < $NSOLID_METADATA_FILE | head -n 1 > $NSOLID_VERSION_FILE
+  $JQ --raw-output 'paths | .[0]' < $NSOLID_METADATA_FILE > $NSOLID_VERSIONS_FILE
+  head -n 1 $NSOLID_VERSIONS_FILE > $NSOLID_VERSION_FILE
   local nsolid_version=`cat $NSOLID_VERSION_FILE`
   echo 'Using N|Solid version ' $nsolid_version
 
