@@ -1,5 +1,5 @@
-NSOLID_DEFAULT_LTS=boron
-NSOLID_DEFAULT_LTS_VERSION_MAJOR=6
+NSOLID_DEFAULT_LTS=dubnium
+NSOLID_DEFAULT_LTS_VERSION_MAJOR=10
 
 NSOLID_METADATA_URL=https://nsolid-download.nodesource.com/download/metadata.json
 NSOLID_METADATA_FILE=/tmp/nsolid-metadata.json
@@ -8,7 +8,7 @@ NSOLID_VERSION_FILE=/tmp/nsolid-version.txt
 NODE_VERSION_FILE=./node-version.txt
 
 install_nsolid() {
-  local version=${1:-6.x}
+  local version=${1:-10.x}
   local dir="$2"
 
   echo "Resolving node version $version"
@@ -23,9 +23,9 @@ install_nsolid() {
   # get the Node.js version number, set in number
   local lts=$NSOLID_DEFAULT_LTS
   local lts_version_major=$NSOLID_DEFAULT_LTS_VERSION_MAJOR
-  if [[ $version =~ ^4 ]]; then
-    lts=argon
-    lts_version_major=4
+  if [[ $version =~ ^6 ]]; then
+    lts=boron
+    lts_version_major=6
   elif [[ $version =~ ^8 ]]; then
     lts=carbon
     lts_version_major=8
