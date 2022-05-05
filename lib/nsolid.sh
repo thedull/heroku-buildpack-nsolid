@@ -1,5 +1,5 @@
-NSOLID_DEFAULT_LTS=erbium
-NSOLID_DEFAULT_LTS_VERSION_MAJOR=12
+NSOLID_DEFAULT_LTS=gallium
+NSOLID_DEFAULT_LTS_VERSION_MAJOR=16
 
 NSOLID_METADATA_URL=https://nsolid-download.nodesource.com/download/metadata.json
 NSOLID_METADATA_FILE=/tmp/nsolid-metadata.json
@@ -8,7 +8,7 @@ NSOLID_VERSION_FILE=/tmp/nsolid-version.txt
 NODE_VERSION_FILE=./node-version.txt
 
 install_nsolid() {
-  local version=${1:-12.x}
+  local version=${1:-16.x}
   local dir="$2"
 
   echo "Resolving node version $version"
@@ -23,12 +23,12 @@ install_nsolid() {
   # get the Node.js version number, set in number
   local lts=$NSOLID_DEFAULT_LTS
   local lts_version_major=$NSOLID_DEFAULT_LTS_VERSION_MAJOR
-  if [[ $version =~ ^8 ]]; then
-    lts=carbon
-    lts_version_major=8
-  elif [[ $version =~ ^10 ]]; then
-    lts=dubnium
-    lts_version_major=10
+  if [[ $version =~ ^12 ]]; then
+    lts=erbium
+    lts_version_major=12
+  elif [[ $version =~ ^14 ]]; then
+    lts=fermium
+    lts_version_major=14
   fi
 
   $JQ --raw-output ".[\"$nsolid_version\"] | .versions | keys | map(select(startswith(\"$lts_version_major\"))) | .[0]" < $NSOLID_METADATA_FILE > $NODE_VERSION_FILE
